@@ -6,8 +6,28 @@
 <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
-<!-- Create a div where the graph will take place -->
+<style>
+    * {
+      font-family: lato;
+    }
+.header {
+  background-color: #ADD8E6;
+  #color: #ADD8E6;
+  height: 100px;
+  padding: 25px;
+}
+</style>
+<div class="header">
+<h1> Children in Foster Care: United States 2000 - 2018 </h1>
+<h4> A visualization of trends in care nationally and in the state of Washington from the year 2000 - 2018</h4>
+</div><br/><br/>
+<h3> Washington State: Count of children in foster care per year</h3> 
 <div id="viz"></div>
+<h6><i> Note: This is a snapshot of total children in care on January 1 of each year</i></h6>
+<h6><i> Source: <a href="http://pocdata.org/">Partners for our Children Data Portal<a></i></h6>
+
+<button type="button" onclick="window.location.href='scene1.html'">Previous Chart</button>
+<button type="button" onclick="window.location.href='scene3.html'">Next Chart</button> 
 <script>
 
 // set the dimensions and margins of the graph
