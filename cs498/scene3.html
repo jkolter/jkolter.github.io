@@ -175,11 +175,19 @@ function drawTooltip() {
   }
   });
   var tformat = d3.timeFormat("%Y");
-  tooltip
+  tooltip.html("Year:" + tformat(data2[0].year)) 
     .style('display', 'block')
     .style('left', d3.event.pageX + 10 + "px")
     .style('top', d3.event.pageY - 10 + "px")
-    .html("Year:" + tformat(data2[0].year) + "<br/>" + "White/Caucasian:" + data2[0].white + "<br/>" + "African American:" + data2[0].black + "<br/>" + "American Indian/Alaskan Native:" + data2[0].indigenous);
+	.append("div")
+	.style("color", "#e41a1c")
+    .html("White/Caucasian:" + data2[0].white)
+	.append("div")
+	.style("color", "#984ea3")
+    .html("African American:" + data2[0].black)
+	.append("div")
+	.style("color", "#4daf4a")
+    .html("American Indian/Alaskan Native:" + data2[0].indigenous);
 }
 })
 
