@@ -24,7 +24,7 @@ var svg = d3.select("#viz")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 	  
-d3.csv("https://raw.githubusercontent.com/jkolter/jkolter.github.io/master/cs498/data/WA_Children_in_Out-of-Home_Care_(Count).csv").then(
+d3.csv("https://raw.githubusercontent.com/jkolter/jkolter.github.io/master/cs498/data/AFCARS_Children_in_Out-of-Home_Care_(Count).csv").then(
   function(data) {
 	data.forEach(function(d) {
 	 d.year = d3.timeParse("%Y")(+d.Year);
@@ -39,8 +39,8 @@ d3.csv("https://raw.githubusercontent.com/jkolter/jkolter.github.io/master/cs498
       .call(d3.axisBottom(x));
 
     var y = d3.scaleLinear()
-      .domain([0,12000])
-      .range([ height, 0 ]);
+      .domain([0,d3.max(data, function(d) {return +d.total;})])
+      .range([ height, 0 ]).nice();
     svg.append("g")
       .call(d3.axisLeft(y));
 
