@@ -24,13 +24,19 @@ var svg = d3.select("#viz")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 	  
-d3.csv("https://raw.githubusercontent.com/jkolter/jkolter.github.io/master/cs498/data/WA_Children_in_Out-of-Home_Care_(Count).csv").then(
+
+d3.csv("https://raw.githubusercontent.com/jkolter/jkolter.github.io/master/cs498/data/WA_RACE_Children_in_Out-of-Home_Care_(Count)_CLEAN.csv").then(
+
   function(data) {
-	data.forEach(function(d) {
+  	data.forEach(function(d) {
 	 d.year = d3.timeParse("%Y")(+d.Year);
-	 d.total = +d.Total;
+	 d.white = d['White/Caucasian'];
+	 d.black = d['African American'];
+	 d.indigenous = d['American Indian/Alaskan Native'];
 	});
-	
+
+  var keys = data.columns.slice(1)
+console.log(keys)
     var x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.year; }))
       .range([ 0, width ]);
@@ -38,23 +44,37 @@ d3.csv("https://raw.githubusercontent.com/jkolter/jkolter.github.io/master/cs498
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
-    var y = d3.scaleLinear()
-      .domain([0,12000])
-      .range([ height, 0 ]);
-    svg.append("g")
-      .call(d3.axisLeft(y));
 
-    svg.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 2)
-      .attr("d", d3.line()
-        .x(function(d) { return x(d.year) })
-        .y(function(d) { return y(d.total) })
-        )
+	  var y = d3.scaleLinear()
+    .domain([0,10000])
+    .range([ height, 0 ]).nice();
+  svg.append("g")
+    .call(d3.axisLeft(y));
+	
+	
 
-});
+  var color = d3.scaleOrdinal()
+    .domain(keys)
+    .range(['#e41a1c','#984ea3','#4daf4a'])
+
+  var stackedData = d3.stack()
+    .keys(keys)
+    (data)
+    console.log("This is the stack result: ", stackedData)
+
+  svg
+    .selectAll("mylayers")
+    .data(stackedData)
+    .enter()
+    .append("path")
+      .style("fill", function(d) { console.log(d.key) ; return color(d.key); })
+      .attr("d", d3.area()
+        .x(function(d, i) { return x(d.data.year); })
+        .y0(function(d) { return y(d[0]); })
+        .y1(function(d) { return y(d[1]); })
+    )
+
+})
 
 </script>
 </body>
