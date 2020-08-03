@@ -23,6 +23,7 @@
 </div><br/><br/>
 <h3> United States: Count of children in foster care per year</h3> 
 <div id="viz"></div>
+<div id='tooltip' style='position:absolute;background-color:lightgray'></div>
 <h6><i> Note: This is a snapshot of total children in care at the end of the fiscal year (Sep 30)</i></h6>
 <h6><i> Source: <a href="https://www.acf.hhs.gov/cb/research-data-technology/statistics-research/afcars">AFCARS Data from the US Administration for Children and Families<a></i></h6>
 
@@ -125,6 +126,78 @@ svg.append("g")
     .attr('y1', 0)
     .attr('y2', 430);
 	
+			// tooltip section
+	const tooltip = d3.select('#tooltip');
+const tooltipLine = svg.append('line');
+  tipBox = svg.append('rect')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('opacity', 0)
+    .on('mousemove', drawTooltip)
+    .on('mouseout', removeTooltip);
+function removeTooltip() {
+  if (tooltip) tooltip.style('display', 'none');
+  if (tooltipLine) tooltipLine.attr('stroke', 'none');
+}
+function drawTooltip() {
+  
+ var mouse = d3.mouse(this);
+   
+ tooltipLine.attr('stroke', 'black')
+    .attr('x1', mouse[0])
+    .attr('x2', mouse[0])
+    .attr('y1', 0)
+    .attr('y2', height);
+  
+  data2 = data.filter(function (d) {
+  if (d3.event.pageX < 131) {
+	return (d.Year == "2000");
+  } else if (d3.event.pageX >= 131 & d3.event.pageX < 175) {
+	return (d.Year == "2001");
+	  } else if (d3.event.pageX >= 175 & d3.event.pageX < 224) {
+	return (d.Year == "2002");
+	  } else if (d3.event.pageX >= 224 & d3.event.pageX < 272) {
+	return (d.Year == "2003");
+	  } else if (d3.event.pageX >= 272 & d3.event.pageX < 320) {
+	return (d.Year == "2004");
+	  } else if (d3.event.pageX >= 320 & d3.event.pageX < 369) {
+	return (d.Year == "2005");
+	  } else if (d3.event.pageX >= 369 & d3.event.pageX < 420) {
+	return (d.Year == "2006");
+	  } else if (d3.event.pageX >= 420 & d3.event.pageX < 466) {
+	return (d.Year == "2007");
+	  } else if (d3.event.pageX >= 466 & d3.event.pageX < 516) {
+	return (d.Year == "2008");
+	  } else if (d3.event.pageX >= 516 & d3.event.pageX < 562) {
+	return (d.Year == "2009");
+	  } else if (d3.event.pageX >= 562 & d3.event.pageX < 613) {
+	return (d.Year == "2010");
+	  } else if (d3.event.pageX >= 613 & d3.event.pageX < 658) {
+	return (d.Year == "2011");
+	  } else if (d3.event.pageX >= 658 & d3.event.pageX < 710) {
+	return (d.Year == "2012");
+	  } else if (d3.event.pageX >= 710 & d3.event.pageX < 755) {
+	return (d.Year == "2013");
+	  } else if (d3.event.pageX >= 755 & d3.event.pageX < 806) {
+	return (d.Year == "2014");
+	  } else if (d3.event.pageX >= 806 & d3.event.pageX < 852) {
+	return (d.Year == "2015");
+	  } else if (d3.event.pageX >= 852 & d3.event.pageX < 900) {
+	return (d.Year == "2016");
+	  } else if (d3.event.pageX >= 900 & d3.event.pageX < 945) {
+	return (d.Year == "2017");
+  } else {
+  	return (d.Year == "2018");
+  }
+  });
+  var tformat = d3.timeFormat("%Y");
+  tooltip.html("Year:" + tformat(data2[0].year)) 
+    .style('display', 'block')
+    .style('left', d3.event.pageX + 10 + "px")
+    .style('top', d3.event.pageY - 10 + "px")
+	.append("div")
+    .html("Count:" + data2[0].total);
+}
 	
 });
 
