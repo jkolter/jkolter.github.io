@@ -14,7 +14,7 @@
   background-color: #ADD8E6;
   #color: #ADD8E6;
   height: 100px;
-  padding: 25px;
+  padding: 10px;
 }
 </style>
 <div class="header">
@@ -85,9 +85,89 @@ d3.csv("https://raw.githubusercontent.com/jkolter/jkolter.github.io/master/cs498
       .attr("d", d3.line()
         .x(function(d) { return x(d.year) })
         .y(function(d) { return y(d.total) })
-        )
+        );
+svg.append("g")
+     .append("text")
+        .attr("x",395)
+        .attr("y", 10)
+        .attr("dy", 0)
+        .text("New alternative response programs drastically decrease removals")
+        .style("font-size", 14)
+		.style("background-color","lightgray")
+		.call(wrap,175);
+		
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+	.attr('stroke-dasharray',"15,15")
+    .attr('x1', 388)
+    .attr('x2', 388)
+    .attr('y1', 0)
+    .attr('y2', 430);
+	
+svg.append("g")
+     .append("text")
+        .attr("x",585)
+        .attr("y", 10)
+        .attr("dy", 0)
+        .text("Opiod crisis hits Washington state")
+        .style("font-size", 14)
+		.style("background-color","lightgray")
+		.call(wrap,110);
+		
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+		.attr('stroke-dasharray',"15,15")
+    .attr('x1', 580)
+    .attr('x2', 580)
+    .attr('y1', 0)
+    .attr('y2', 430);
+	
+	svg.append("g")
+     .append("text")
+        .attr("x",600)
+        .attr("y", 300)
+        .attr("dy", 0)
+        .text("Similar overall trend as nationally")
+        .style("font-size", 18)
+        .style("font-weight", "bold")
+		.style("background-color","lightgray");
 
 });
 
+// borrowed courtesy of https://stackoverflow.com/questions/24784302/wrapping-text-in-d3
+function wrap(text, width) {
+    text.each(function () {
+        var text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            x = text.attr("x"),
+            y = text.attr("y"),
+            dy = 0, //parseFloat(text.attr("dy")),
+            tspan = text.text(null)
+                        .append("tspan")
+                        .attr("x", x)
+                        .attr("y", y)
+                        .attr("dy", dy + "em");
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan")
+                            .attr("x", x)
+                            .attr("y", y)
+                            .attr("dy", ++lineNumber * lineHeight + dy + "em")
+                            .text(word);
+            }
+        }
+    });
+}
 </script>
 </body>

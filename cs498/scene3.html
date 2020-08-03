@@ -14,7 +14,7 @@
   background-color: #ADD8E6;
   #color: #ADD8E6;
   height: 100px;
-  padding: 25px;
+  padding: 10px;
 }
 </style>
 <div class="header">
@@ -26,8 +26,8 @@
 <div id='tooltip' style='position:absolute;background-color:lightgray'></div>
 <h6><i> Note: This is a snapshot of total children in care on January 1 of each year </i></h6>
 <h6><i> Source: <a href="http://pocdata.org/">Partners for our Children Data Portal<a></i></h6>
-
 <button type="button" onclick="window.location.href='scene2.html'">Previous Chart</button>
+<h5>To further explore the racial disparity of foster care in Washington please visit the dashboard on Tableau public:<br/> <a href="https://public.tableau.com/profile/jason.kolter8488#!/vizhome/Project_15925305682990/Dashboard">Count and Rate by Race/Ethnicity of Children in Foster Care in Washington State</a></h5>
 <script>
 
 
@@ -110,7 +110,93 @@ d3.csv("https://raw.githubusercontent.com/jkolter/jkolter.github.io/master/cs498
         .y0(function(d) { return y(d[0]); })
         .y1(function(d) { return y(d[1]); })
     )
-
+	
+// annotations
+svg.append("g")
+     .append("text")
+        .attr("x",20)
+        .attr("y", 10)
+        .attr("dy", 0)
+        .text("Large proportion of IPOC children in care")
+        .style("font-size", 14)
+		.style("background-color","lightgray")
+		.call(wrap,110);
+		
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+    .attr('x1', 15)
+    .attr('x2', 15)
+    .attr('y1', 50)
+    .attr('y2', 180);
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+	.attr('stroke-width',4)
+    .attr('x1', 15)
+    .attr('x2', 50)
+    .attr('y1', 90)
+    .attr('y2', 90);
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+	.attr('stroke-width',4)
+    .attr('x1', 15)
+    .attr('x2', 50)
+    .attr('y1', 125)
+    .attr('y2', 125);
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+	.attr('stroke-width',4)
+    .attr('x1', 15)
+    .attr('x2', 50)
+    .attr('y1', 180)
+    .attr('y2', 180);
+	
+svg.append("g")
+     .append("text")
+        .attr("x",780)
+        .attr("y", 10)
+        .attr("dy", 0)
+        .text("Gap has narrowed significantly")
+        .style("font-size", 14)
+		.style("background-color","lightgray")
+		.call(wrap,110);
+		
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+    .attr('x1', 858)
+    .attr('x2',858)
+    .attr('y1', 50)
+    .attr('y2', 182);
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+	.attr('stroke-width',4)
+    .attr('x1', 815)
+    .attr('x2', 858)
+    .attr('y1', 128)
+    .attr('y2', 128);
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+	.attr('stroke-width',4)
+    .attr('x1', 815)
+    .attr('x2', 858)
+    .attr('y1', 150)
+    .attr('y2', 150);
+			svg.append("g")
+	.append("line")
+	.attr('stroke', 'black')
+	.attr('stroke-width',4)
+    .attr('x1', 815)
+    .attr('x2', 858)
+    .attr('y1', 182)
+    .attr('y2', 182);
+	
+// tooltip section
 	const tooltip = d3.select('#tooltip');
 const tooltipLine = svg.append('line');
   tipBox = svg.append('rect')
@@ -189,9 +275,41 @@ function drawTooltip() {
 	.style("color", "#4daf4a")
     .html("American Indian/Alaskan Native:" + data2[0].indigenous);
 }
-})
+});
 
-
+// borrowed courtesy of https://stackoverflow.com/questions/24784302/wrapping-text-in-d3
+function wrap(text, width) {
+    text.each(function () {
+        var text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            x = text.attr("x"),
+            y = text.attr("y"),
+            dy = 0, //parseFloat(text.attr("dy")),
+            tspan = text.text(null)
+                        .append("tspan")
+                        .attr("x", x)
+                        .attr("y", y)
+                        .attr("dy", dy + "em");
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan")
+                            .attr("x", x)
+                            .attr("y", y)
+                            .attr("dy", ++lineNumber * lineHeight + dy + "em")
+                            .text(word);
+            }
+        }
+    });
+}
 
 </script>
 </body>
